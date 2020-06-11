@@ -13,6 +13,9 @@ namespace Overtrue\Pinyin;
 
 use Closure;
 
+/**
+ * Dict File loader.
+ */
 class FileDictLoader implements DictLoaderInterface
 {
     /**
@@ -68,6 +71,20 @@ class FileDictLoader implements DictLoaderInterface
         if (file_exists($surnames)) {
             $dictionary = (array) include $surnames;
             $callback($dictionary);
+        }
+    }
+
+    /**
+     * Load Number dict
+     * @param Closure $callback
+     */
+    public function mapNumberName(Closure $callback)
+    {
+        $numbers = $this->path . '/numbers';
+
+        if (file_exists($numbers)) {
+            $directonary = (array) include $numbers;
+            $callback($directonary);
         }
     }
 }

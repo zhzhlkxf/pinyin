@@ -13,6 +13,9 @@ namespace Overtrue\Pinyin;
 
 use Closure;
 
+/**
+ * Memory Dict File loader.
+ */
 class MemoryFileDictLoader implements DictLoaderInterface
 {
     /**
@@ -34,14 +37,16 @@ class MemoryFileDictLoader implements DictLoaderInterface
      *
      * @var array
      */
-    protected $segments = [];
+    protected $segments = array();
 
     /**
      * Surname cache.
      *
      * @var array
      */
-    protected $surnames = [];
+    protected $surnames = array();
+
+    protected $numbernames = array();
 
     /**
      * Constructor.
@@ -89,5 +94,22 @@ class MemoryFileDictLoader implements DictLoaderInterface
         }
 
         $callback($this->surnames);
+    }
+
+    /**
+     * Load numbernames dict.
+     * @param Closure $callback
+     */
+    public function mapNumberName(Closure $callback)
+    {
+        if (empty($this->numbernames)) {
+            $numbernames = $this->path . '/numbers';
+
+            if (file_exists($numbernames)) {
+                $this->numbernames = (array) include $numbernames;
+            }
+        }
+
+        $callback($this->numbernames);
     }
 }

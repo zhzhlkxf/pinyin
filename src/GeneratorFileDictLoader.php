@@ -15,6 +15,9 @@ use Closure;
 use SplFileObject;
 use Generator;
 
+/**
+ * Generator syntax(yield) Dict File loader.
+ */
 class GeneratorFileDictLoader implements DictLoaderInterface
 {
     /**
@@ -44,6 +47,8 @@ class GeneratorFileDictLoader implements DictLoaderInterface
      * @var SplFileObject
      */
     protected static $surnamesHandle;
+
+    protected static $numbernamesHandle;
 
     /**
      * Constructor.
@@ -138,5 +143,18 @@ class GeneratorFileDictLoader implements DictLoaderInterface
         }
 
         $this->traversing($this->getGenerator([static::$surnamesHandle]), $callback);
+    }
+
+    /**
+     * Load numbername dict.
+     * @param Closure $callback
+     */
+    public function mapNumbername(Closure $callback)
+    {
+        if (!static::$numbernamesHandle instanceof SplFileObject) {
+            static::$numbernamesHandle = $this->openFile($this->path . '/numbers');
+        }
+
+        $this->traversing($this->getGenerator([static::$numbernamesHandle]), $callback);
     }
 }
